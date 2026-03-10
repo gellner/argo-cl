@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: test-application-set
+  namespace: openshift-gitops
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+  - git:
+      repoURL: https://github.com/gellner/argo-cl.git
+      revision: HEAD
+      files:
+      - path: argo/environments/**/config.json
+  template:
+    metadata:
+      name: '{{.path.basename}}-test-rhacm-policies'
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/gellner/argo-code.git
+        targetRevision: '{{.examplerevision}}'
+        path: 'envioronment/{{.path.basename}}/'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'policies-{{.path.basename}}'
