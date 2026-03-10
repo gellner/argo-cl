@@ -20,7 +20,7 @@ spec:
       source:
         repoURL: https://github.com/gellner/argo-code.git
         targetRevision: '{{.examplerevision}}'
-        path: 'envioronment/{{.path.basename}}/'
+        path: 'environment/{{.path.basename}}/'
       destination:
         server: https://kubernetes.default.svc
         namespace: 'policies-{{.path.basename}}'
